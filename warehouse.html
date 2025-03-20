@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Registration - Fastsal Transport</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add after the existing links in head -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    
+        .form-group {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+    
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            border-color: #4CAF50;
+        }
+    
+        .form-group label {
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+    
+        .form-group input:focus + label,
+        .form-group textarea:focus + label {
+            color: #4CAF50;
+        }
+    
+        .section-scroll-indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+    
+        .scroll-dot {
+            width: 10px;
+            height: 10px;
+            background: #ddd;
+            border-radius: 50%;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .scroll-dot.active {
+            background: #4CAF50;
+            transform: scale(1.5);
+        }
+    </style>
+
+    <!-- Add after the form section -->
+    <div class="section-scroll-indicator">
+        <div class="scroll-dot" data-section="owner-info"></div>
+        <div class="scroll-dot" data-section="warehouse-details"></div>
+        <div class="scroll-dot" data-section="facilities"></div>
+        <div class="scroll-dot" data-section="documents"></div>
+    </div>
+
+    <!-- Update the script section -->
+    <script>
+        // Smooth scroll handling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    
+        // Form validation and smooth transitions
+        const form = document.getElementById('warehouseRegistrationForm');
+        const inputs = form.querySelectorAll('input, textarea, select');
+    
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.form-group').style.transform = 'translateX(10px)';
+            });
+    
+            input.addEventListener('blur', function() {
+                this.closest('.form-group').style.transform = 'translateX(0)';
+                validateInput(this);
+            });
+        });
+    
+        function validateInput(input) {
+            const formGroup = input.closest('.form-group');
+            if (input.value.trim() === '' && input.hasAttribute('required')) {
+                formGroup.style.borderLeft = '3px solid #ff4444';
+            } else {
+                formGroup.style.borderLeft = '3px solid #4CAF50';
+            }
+        }
+    
+        // Section scroll indicator
+        const sections = ['owner-info', 'warehouse-details', 'facilities', 'documents'];
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    document.querySelectorAll('.scroll-dot').forEach(dot => {
+                        dot.classList.remove('active');
+                        if (dot.dataset.section === sectionId) {
+                            dot.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+    
+        sections.forEach(section => {
+            const element = document.querySelector(`#${section}`);
+            if (element) observer.observe(element);
+        });
+    
+        // Form submission handling
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    isValid = false;
+                    input.closest('.form-group').style.transform = 'translateX(10px)';
+                    setTimeout(() => {
+                        input.closest('.form-group').style.transform = 'translateX(0)';
+                    }, 500);
+                }
+            });
+    
+            if (isValid) {
+                this.style.display = 'none';
+                document.getElementById('registrationSuccess').classList.remove('hidden');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Fastsal Transport</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer.html">Farmer</a></li>
+                <li><a href="about.html" style="color: #4CAF50;">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') no-repeat center center/cover;">
+        <div class="hero-content text-center">
+            <h1 class="animate__animated animate__fadeInDown">Warehouse Partner Platform</h1>
+            <p class="animate__animated animate__fadeInUp animate__delay-1s">Join our network of storage facilities and help farmers preserve their produce</p>
+            <div class="cta-buttons animate__animated animate__fadeInUp animate__delay-2s">
+                <a href="#warehouse-form" class="btn hover-effect" style="background-color: #4CAF50; color: white; border: none; padding: 12px 25px; border-radius: 5px; font-size: 16px;">Register Warehouse</a>
+                <a href="#benefits" class="btn hover-effect" style="background-color: #FF9800; color: white; border: none;">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Warehouse Registration Form -->
+    <section id="warehouse-form" class="registration-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Warehouse Registration</h2>
+                <p>Partner with us to provide storage solutions</p>
+            </div>
+            <div class="registration-form">
+                <form id="warehouseRegistrationForm" class="feedback-form-container">
+                    <!-- Owner Information -->
+                    <h3>Owner Information</h3>
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" required>
+                    </div>
+
+                    <!-- Warehouse Details -->
+                    <h3 class="mt-4">Warehouse Details</h3>
+                    <div class="form-group">
+                        <label for="warehouseName">Warehouse Name</label>
+                        <input type="text" class="form-control" id="warehouseName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Complete Address</label>
+                        <textarea class="form-control" id="location" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="capacity">Storage Capacity (in tons)</label>
+                        <input type="number" class="form-control" id="capacity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="storageType">Storage Type</label>
+                        <select class="form-control" id="storageType" required>
+                            <option value="">Select Storage Type</option>
+                            <option value="cold">Cold Storage</option>
+                            <option value="dry">Dry Storage</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+
+                    <!-- Facilities -->
+                    <h3 class="mt-4">Available Facilities</h3>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="tempControl">
+                        <label class="form-check-label" for="tempControl">Temperature Control</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="humidityControl">
+                        <label class="form-check-label" for="humidityControl">Humidity Control</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="pestControl">
+                        <label class="form-check-label" for="pestControl">Pest Control</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="security">
+                        <label class="form-check-label" for="security">24/7 Security</label>
+                    </div>
+
+                    <!-- Documents -->
+                    <h3 class="mt-4">Required Documents</h3>
+                    <div class="form-group">
+                        <label>Warehouse License</label>
+                        <input type="file" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Safety Certification</label>
+                        <input type="file" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Insurance Documents</label>
+                        <input type="file" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn" style="background-color: #4CAF50; color: white; border: none; margin-top: 20px;">Submit Registration</button>
+                </form>
+
+                <div id="registrationSuccess" class="feedback-success hidden text-center">
+                    <i class="fas fa-check-circle fa-3x mb-3"></i>
+                    <h3>Registration Successful!</h3>
+                    <p>Thank you for registering your warehouse. We will review your application and contact you soon.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add after the hero section and before the registration form -->
+    <section id="warehouse-locator" class="py-5">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Find Nearby Warehouses</h2>
+                <p>Locate storage facilities in your area</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="search-filters">
+                        <div class="form-group mb-3">
+                            <label for="citySearch">Search by City</label>
+                            <input type="text" class="form-control" id="citySearch" placeholder="Enter city name">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="storageType">Storage Type</label>
+                            <select class="form-control" id="storageFilter">
+                                <option value="all">All Types</option>
+                                <option value="cold">Cold Storage</option>
+                                <option value="dry">Dry Storage</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Distance Range</label>
+                            <input type="range" class="form-range" id="distanceRange" min="1" max="50" value="10">
+                            <small class="text-muted">Distance: <span id="rangeValue">10</span> km</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="warehouse-list">
+                        <!-- Sample warehouse cards -->
+                        <div class="warehouse-card p-3 mb-3 border rounded animate__animated animate__fadeIn">
+                            <div class="d-flex justify-content-between">
+                                <h4>Central Cold Storage</h4>
+                                <span class="badge bg-success">2.5 km away</span>
+                            </div>
+                            <p><i class="fas fa-map-marker-alt text-danger"></i> 123 Main Street, City Center</p>
+                            <div class="facility-tags mb-2">
+                                <span class="badge bg-info me-2">Cold Storage</span>
+                                <span class="badge bg-secondary me-2">Temperature Control</span>
+                                <span class="badge bg-secondary">24/7 Security</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Capacity: 500 tons</small>
+                                <button class="btn btn-sm btn-outline-success">Contact Warehouse</button>
+                            </div>
+                        </div>
+                        
+                        <div class="warehouse-card p-3 mb-3 border rounded animate__animated animate__fadeIn">
+                            <div class="d-flex justify-content-between">
+                                <h4>Metro Dry Storage</h4>
+                                <span class="badge bg-success">3.8 km away</span>
+                            </div>
+                            <p><i class="fas fa-map-marker-alt text-danger"></i> 456 Industrial Area, Sector 5</p>
+                            <div class="facility-tags mb-2">
+                                <span class="badge bg-warning me-2">Dry Storage</span>
+                                <span class="badge bg-secondary me-2">Pest Control</span>
+                                <span class="badge bg-secondary">24/7 Security</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Capacity: 750 tons</small>
+                                <button class="btn btn-sm btn-outline-success">Contact Warehouse</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Add this script before the closing body tag -->
+    <script>
+        // Range slider value display
+        const rangeSlider = document.getElementById('distanceRange');
+        const rangeValue = document.getElementById('rangeValue');
+        rangeSlider.addEventListener('input', function() {
+            rangeValue.textContent = this.value;
+        });
+    
+        // Filter animation
+        document.getElementById('citySearch').addEventListener('input', function() {
+            const cards = document.querySelectorAll('.warehouse-card');
+            cards.forEach(card => {
+                card.classList.remove('animate__fadeIn');
+                void card.offsetWidth; // Trigger reflow
+                card.classList.add('animate__fadeIn');
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

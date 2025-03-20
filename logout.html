@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Logout - Fasal Transport</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .logout-section {
+            padding: 80px 0;
+            min-height: calc(100vh - 250px);
+            background: linear-gradient(135deg, rgba(236, 255, 236, 0.8) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(236, 255, 236, 0.8) 100%);
+            position: relative;
+        }
+        
+        .logout-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234caf50' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .logout-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            padding: 40px;
+            transform: perspective(1000px);
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logout-container:hover {
+            transform: perspective(1000px) translateZ(10px);
+            box-shadow: var(--card-3d-shadow);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .profile-header h2 {
+            font-size: 2.2rem;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .profile-header p {
+            color: #777;
+            font-size: 1.1rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px;
+            position: relative;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .verification-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: var(--success-color);
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border: 2px solid white;
+        }
+
+        .user-info {
+            margin-bottom: 30px;
+            background-color: rgba(76, 175, 80, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .info-label {
+            flex: 1;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .info-value {
+            flex: 2;
+            color: #333;
+        }
+
+        .verification-form {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+
+        .verification-form h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .logout-button {
+            width: 100%;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .logout-button:hover {
+            transform: perspective(1000px) translateZ(10px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.2);
+            background: linear-gradient(135deg, #2E7D32, #1B5E20);
+        }
+
+        .cancel-button {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            color: #777;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .cancel-button:hover {
+            color: var(--primary-color);
+        }
+
+        .session-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .session-info p {
+            margin: 5px 0;
+        }
+
+        .logout-success {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .logout-success i {
+            font-size: 5rem;
+            color: var(--success-color);
+            margin-bottom: 15px;
+        }
+
+        .logout-success h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .logout-success p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Fasal Transport</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer.html">Farmer</a></li>
+                <li><a href="provider.html">Provider</a></li>
+                <li><a href="warehouse.html">Warehouse</a></li>
+                <li><a href="marketplace.html">Marketplace</a></li>
+                <li><a href="payment.html">Payment</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-outline">Login</a>
+                <a href="#" class="btn btn-primary">Sign Up</a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Logout Section -->
+    <section class="logout-section">
+        <div class="container">
+            <div class="logout-container fade-in">
+                <div id="profileForm">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                            <div class="verification-badge">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <h2>Account Profile</h2>
+                        <p>Manage your account details and logout</p>
+                    </div>
+                    
+                    <div class="user-info">
+                        <div class="info-row">
+                            <div class="info-label">Name:</div>
+                            <div class="info-value">Ramesh Kumar</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Email:</div>
+                            <div class="info-value">ramesh.kumar@gmail.com</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">User Type:</div>
+                            <div class="info-value">Farmer</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Location:</div>
+                            <div class="info-value">Haryana, India</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Member Since:</div>
+                            <div class="info-value">June 12, 2023</div>
+                        </div>
+                    </div>
+
+                    <div class="verification-form">
+                        <h3>Verify to Logout</h3>
+                        <form id="logoutVerificationForm">
+                            <div class="form-group">
+                                <label for="email">Confirm Email</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Enter Password</label>
+                                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            </div>
+                            
+                            <button type="submit" class="logout-button">
+                                <i class="fas fa-sign-out-alt"></i> Confirm Logout
+                            </button>
+                            <a href="index.html" class="cancel-button">Cancel and Return to Home</a>
+                        </form>
+                    </div>
+                </div>
+                
+                <div id="logoutSuccess" class="logout-success">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Successfully Logged Out</h3>
+                    <p>Your session has been terminated successfully. Thank you for using Fasal Transport!</p>
+                    <a href="index.html" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Fasal Transport</h2>
+                    <p>Connecting farms to markets efficiently</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="#">Our Team</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="#">Transport</a></li>
+                            <li><a href="#">Storage</a></li>
+                            <li><a href="#">Cold Chain</a></li>
+                            <li><a href="#">Market Insights</a></li>
+                            <li><a href="payment.html">Payment</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Support</h3>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Fasal Transport. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.2
+        };
+    
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+    
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+    
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+    
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Logout Form Submission
+        const logoutForm = document.getElementById('logoutVerificationForm');
+        const profileFormContainer = document.getElementById('profileForm');
+        const logoutSuccess = document.getElementById('logoutSuccess');
+
+        if (logoutForm) {
+            logoutForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Validate form
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Simple validation - in a real app, this would check against stored values
+                if (email !== 'ramesh.kumar@gmail.com') {
+                    alert('Email does not match your account email');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    alert('Please enter a valid password');
+                    return;
+                }
+                
+                // Simulate logout processing
+                setTimeout(() => {
+                    profileFormContainer.style.display = 'none';
+                    logoutSuccess.style.display = 'block';
+                    
+                    // In a real app, this would clear session data
+                    console.log('User logged out');
+                }, 1500);
+            });
+        }
+
+        // Initialize dynamic info
+    </script>
+</body>
+</html> 

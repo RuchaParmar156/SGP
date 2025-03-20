@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Registration - Fastsal Transport</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Fastsal Transport</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer.html">Farmer</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Provider Registration Form -->
+    <section class="registration-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Transport Provider Registration</h2>
+                <p>Join our network of trusted transport providers</p>
+            </div>
+            <div class="registration-form">
+                <form id="providerRegistrationForm" class="feedback-form-container">
+                    <!-- Personal Information -->
+                    <h3>Personal Information</h3>
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Complete Address</label>
+                        <textarea class="form-control" id="address" rows="3" required></textarea>
+                    </div>
+
+                    <!-- Business Information -->
+                    <h3 class="mt-4">Business Information</h3>
+                    <div class="form-group">
+                        <label for="businessName">Business Name</label>
+                        <input type="text" class="form-control" id="businessName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gstNumber">GST Number</label>
+                        <input type="text" class="form-control" id="gstNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">Years of Experience</label>
+                        <input type="number" class="form-control" id="experience" required>
+                    </div>
+
+                    <!-- Vehicle Information -->
+                    <h3 class="mt-4">Vehicle Details</h3>
+                    <div id="vehicleDetails">
+                        <div class="vehicle-entry border p-3 mb-3">
+                            <div class="form-group">
+                                <label>Vehicle Type</label>
+                                <select class="form-control" required>
+                                    <option value="">Select Vehicle Type</option>
+                                    <option value="truck">Truck</option>
+                                    <option value="mini-truck">Mini Truck</option>
+                                    <option value="pickup">Pickup</option>
+                                    <option value="van">Van</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Vehicle Number</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Vehicle Capacity (in tons)</label>
+                                <input type="number" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Insurance Number</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Insurance Expiry Date</label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mb-3" onclick="addVehicle()">Add Another Vehicle</button>
+
+                    <!-- Documents Upload -->
+                    <h3 class="mt-4">Required Documents</h3>
+                    <div class="form-group">
+                        <label>ID Proof (Aadhar/PAN)</label>
+                        <input type="file" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Business Registration Certificate</label>
+                        <input type="file" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Registration Documents</label>
+                        <input type="file" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn" style="background-color: #007bff; color: white; border: none; margin-top: 20px;">Submit Registration</button>
+                </form>
+
+                <div id="registrationSuccess" class="feedback-success hidden text-center">
+                    <i class="fas fa-check-circle fa-3x mb-3"></i>
+                    <h3>Registration Successful!</h3>
+                    <p>Thank you for registering as a transport provider. We will review your application and contact you soon.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function addVehicle() {
+            const vehicleTemplate = document.querySelector('.vehicle-entry').cloneNode(true);
+            // Reset all input values in the clone
+            vehicleTemplate.querySelectorAll('input, select').forEach(input => input.value = '');
+            document.getElementById('vehicleDetails').appendChild(vehicleTemplate);
+        }
+
+        document.getElementById('providerRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('registrationSuccess').classList.remove('hidden');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transport Provider Platform - Fastsal Transport</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Fastsal Transport</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer.html">Farmer</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') no-repeat center center/cover;">
+        <div class="hero-content text-center">
+            <h1 class="animate__animated animate__fadeInDown">Transport Provider Platform</h1>
+            <p class="animate__animated animate__fadeInUp animate__delay-1s">Join our network of trusted transport providers and grow your business</p>
+            <div class="cta-buttons animate__animated animate__fadeInUp animate__delay-2s">
+                <a href="provider-registration.html" class="btn hover-effect" style="background-color: #4CAF50; color: white; border: none; padding: 12px 25px; border-radius: 5px; font-size: 16px; text-decoration: none; transition: all 0.3s ease;">Register as Provider</a>
+                <a href="#benefits" class="btn hover-effect" style="background-color: #FF9800; color: white; border: none;">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="benefits-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Join Us?</h2>
+                <p>Benefits of becoming a transport provider</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="benefit-card text-center p-4">
+                        <i class="fas fa-money-bill-wave fa-3x mb-3" style="color: #4CAF50;"></i>
+                        <h3>Increased Revenue</h3>
+                        <p>Access a large network of farmers and regular transport opportunities</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="benefit-card text-center p-4">
+                        <i class="fas fa-route fa-3x mb-3" style="color: #4CAF50;"></i>
+                        <h3>Route Optimization</h3>
+                        <p>Smart routing system to maximize your vehicle utilization</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="benefit-card text-center p-4">
+                        <i class="fas fa-shield-alt fa-3x mb-3" style="color: #4CAF50;"></i>
+                        <h3>Secure Payments</h3>
+                        <p>Guaranteed and timely payments for your services</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="requirements-section" style="padding: 80px 0; background-color: #f9f9f9;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Registration Requirements</h2>
+                <p>What you'll need to get started</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="requirements-list">
+                        <h3>Documents Required</h3>
+                        <ul>
+                            <li>Valid ID Proof (Aadhar/PAN)</li>
+                            <li>Business Registration Certificate</li>
+                            <li>GST Registration (if applicable)</li>
+                            <li>Vehicle Registration Documents</li>
+                            <li>Vehicle Insurance Papers</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="requirements-list">
+                        <h3>Vehicle Requirements</h3>
+                        <ul>
+                            <li>Commercial Vehicle Registration</li>
+                            <li>Valid Insurance</li>
+                            <li>Fitness Certificate</li>
+                            <li>Pollution Control Certificate</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="provider-registration.html" class="btn" style="background-color: #4CAF50; color: white; border: none;">Register Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add before closing body tag -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.benefit-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                    entry.target.style.animationDelay = `${index * 0.2}s`;
+                }
+            });
+        }, { threshold: 0.2 });
+    
+        cards.forEach(card => observer.observe(card));
+    });
+    </script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

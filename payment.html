@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Details - Fasal Transport</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .payment-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f9f9ff 0%, #f0f8ff 50%, #fff0f5 100%);
+            min-height: calc(100vh - 250px);
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            padding: 40px;
+            transform: perspective(1000px);
+            transition: var(--transition);
+        }
+
+        .payment-container:hover {
+            transform: perspective(1000px) translateZ(10px);
+            box-shadow: var(--card-3d-shadow);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h2 {
+            font-size: 2.2rem;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .payment-header p {
+            color: #777;
+            font-size: 1.1rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .payment-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .payment-method:hover {
+            background-color: #f9f9f9;
+            transform: translateY(-5px);
+        }
+
+        .payment-method.active {
+            border: 2px solid var(--primary-color);
+            background-color: rgba(76, 175, 80, 0.05);
+        }
+
+        .payment-method img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+
+        .payment-method p {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .terms-checkbox input {
+            margin-right: 10px;
+            width: auto;
+        }
+
+        .terms-checkbox label {
+            font-size: 0.9rem;
+        }
+
+        .terms-checkbox a {
+            color: var(--primary-color);
+            text-decoration: underline;
+            transition: var(--transition);
+        }
+
+        .terms-checkbox a:hover {
+            color: var(--secondary-color);
+        }
+
+        .payment-button {
+            width: 100%;
+            background: linear-gradient(135deg, #aeeca0, #3da80f);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .payment-button:hover {
+            transform: perspective(1000px) translateZ(10px);
+            box-shadow: 0 10px 20px rgba(255, 20, 147, 0.2);
+        }
+
+        .payment-success {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .payment-success i {
+            font-size: 5rem;
+            color: var(--success-color);
+            margin-bottom: 15px;
+        }
+
+        .payment-success h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .payment-success p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        /* Payment Method Fields Styling */
+        .payment-method-fields {
+            margin-top: 20px;
+        }
+
+        .method-fields {
+            display: none;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-group.half {
+            flex: 1;
+        }
+
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+
+        .qr-container p {
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .btn-text.request-otp {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            padding: 5px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .btn-text.request-otp:hover {
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Fasal Transport</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer.html">Farmer</a></li>
+                <li><a href="provider.html">Provider</a></li>
+                <li><a href="warehouse.html">Warehouse</a></li>
+                <li><a href="marketplace.html">Marketplace</a></li>
+                <li><a href="payment.html" class="active">Payment</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-outline">Login</a>
+                <a href="#" class="btn btn-primary">Sign Up</a>
+                <a href="logout.html" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Payment Section -->
+    <section class="payment-section">
+        <div class="container">
+            <div class="payment-container fade-in">
+                <div id="paymentForm">
+                    <div class="payment-header">
+                        <h2>Payment Details</h2>
+                        <p>Complete your transaction securely</p>
+                    </div>
+                    <form id="paymentDetailsForm">
+                        <div class="form-group">
+                            <label for="paymentId">Payment ID</label>
+                            <input type="text" id="paymentId" name="paymentId" placeholder="Enter your payment ID" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Select Payment Method</label>
+                            <div class="payment-methods">
+                                <div class="payment-method" data-method="phonepe">
+                                    <img src="https://download.logo.wine/logo/PhonePe/PhonePe-Logo.wine.png" alt="PhonePe">
+                                    <p>PhonePe</p>
+                                </div>
+                                <div class="payment-method" data-method="gpay">
+                                    <img src="https://download.logo.wine/logo/Google_Pay/Google_Pay-Logo.wine.png" alt="Google Pay">
+                                    <p>Google Pay</p>
+                                </div>
+                                <div class="payment-method" data-method="paytm">
+                                    <img src="https://download.logo.wine/logo/Paytm/Paytm-Logo.wine.png" alt="Paytm">
+                                    <p>Paytm</p>
+                                </div>
+                                <div class="payment-method" data-method="upi">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" alt="UPI">
+                                    <p>UPI</p>
+                                </div>
+                                <div class="payment-method" data-method="card">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/179/179457.png" alt="Card">
+                                    <p>Card</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment method specific fields -->
+                        <div class="payment-method-fields">
+                            <!-- Card Payment Fields -->
+                            <div class="method-fields card-fields" id="cardFields">
+                                <div class="form-group">
+                                    <label for="cardNumber">Card Number</label>
+                                    <input type="text" id="cardNumber" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group half">
+                                        <label for="expiryDate">Expiry Date</label>
+                                        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5">
+                                    </div>
+                                    <div class="form-group half">
+                                        <label for="cvv">CVV</label>
+                                        <input type="password" id="cvv" name="cvv" placeholder="XXX" maxlength="3">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardName">Name on Card</label>
+                                    <input type="text" id="cardName" name="cardName" placeholder="Enter name as on card">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardOtp">Verification OTP</label>
+                                    <input type="text" id="cardOtp" name="cardOtp" placeholder="Enter OTP sent to your mobile" maxlength="6">
+                                    <button type="button" class="btn-text request-otp">Request OTP</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Paytm Fields -->
+                            <div class="method-fields paytm-fields" id="paytmFields">
+                                <div class="form-group">
+                                    <label for="paytmUpi">Paytm UPI ID</label>
+                                    <input type="text" id="paytmUpi" name="paytmUpi" placeholder="yourname@paytm">
+                                </div>
+                                <div class="form-group">
+                                    <label for="paytmOtp">Verification OTP</label>
+                                    <input type="text" id="paytmOtp" name="paytmOtp" placeholder="Enter OTP sent to your mobile" maxlength="6">
+                                    <button type="button" class="btn-text request-otp">Request OTP</button>
+                                </div>
+                            </div>
+                            
+                            <!-- GPay Fields -->
+                            <div class="method-fields gpay-fields" id="gpayFields">
+                                <div class="form-group">
+                                    <div class="qr-container">
+                                        <img src="https://chart.googleapis.com/chart?cht=qr&chl=upi://pay?pa=example@okbank&pn=FasalTransport&am={{amount}}&cu=INR&aid=uGICAgIC1_QeVXw&tr=BC543645&mc=5499&tn=Pay%20for%20Fasal%20Transport%20service" alt="QR Code" class="qr-code">
+                                        <p>Scan this QR code with your Google Pay app</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gpayId">Google Pay ID / UPI ID</label>
+                                    <input type="text" id="gpayId" name="gpayId" placeholder="yourname@okbank">
+                                </div>
+                                <div class="form-group">
+                                    <label for="gpayOtp">Verification Code</label>
+                                    <input type="text" id="gpayOtp" name="gpayOtp" placeholder="Enter verification code" maxlength="6">
+                                    <button type="button" class="btn-text request-otp">Verify</button>
+                                </div>
+                            </div>
+                            
+                            <!-- PhonePe Fields -->
+                            <div class="method-fields phonepe-fields" id="phonepeFields">
+                                <div class="form-group">
+                                    <label for="phonepeNumber">Mobile Number</label>
+                                    <input type="text" id="phonepeNumber" name="phonepeNumber" placeholder="Enter PhonePe registered number" maxlength="10">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phonepeOtp">Verification OTP</label>
+                                    <input type="text" id="phonepeOtp" name="phonepeOtp" placeholder="Enter OTP sent to your mobile" maxlength="6">
+                                    <button type="button" class="btn-text request-otp">Request OTP</button>
+                                </div>
+                            </div>
+                            
+                            <!-- UPI Fields -->
+                            <div class="method-fields upi-fields" id="upiFields">
+                                <div class="form-group">
+                                    <label for="upiId">UPI ID</label>
+                                    <input type="text" id="upiId" name="upiId" placeholder="yourname@upi">
+                                </div>
+                                <div class="form-group">
+                                    <label for="upiOtp">Verification OTP</label>
+                                    <input type="text" id="upiOtp" name="upiOtp" placeholder="Enter OTP sent to your mobile" maxlength="6">
+                                    <button type="button" class="btn-text request-otp">Request OTP</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="amount">Amount (₹)</label>
+                            <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+                        </div>
+                        
+                        <div class="terms-checkbox">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
+                        </div>
+                        
+                        <button type="submit" class="payment-button">Confirm Payment</button>
+                    </form>
+                </div>
+                
+                <div id="paymentSuccess" class="payment-success">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Payment Successful!</h3>
+                    <p>Your transaction has been completed successfully.</p>
+                    <a href="index.html" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Fasal Transport</h2>
+                    <p>Connecting farms to markets efficiently</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="#">Our Team</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="#">Transport</a></li>
+                            <li><a href="#">Storage</a></li>
+                            <li><a href="#">Cold Chain</a></li>
+                            <li><a href="#">Market Insights</a></li>
+                            <li><a href="payment.html">Payment</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Support</h3>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="logout.html">Account Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Fasal Transport. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.2
+        };
+    
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+    
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+    
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+    
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Payment Method Selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const methodFields = document.querySelectorAll('.method-fields');
+        
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', () => {
+                // Remove active class from all methods
+                paymentMethods.forEach(m => m.classList.remove('active'));
+                
+                // Add active class to the clicked method
+                method.classList.add('active');
+                
+                // Hide all method fields
+                methodFields.forEach(field => {
+                    field.style.display = 'none';
+                });
+                
+                // Show the relevant method fields based on selection
+                const selectedMethod = method.getAttribute('data-method');
+                if (selectedMethod === 'card') {
+                    document.getElementById('cardFields').style.display = 'block';
+                } else if (selectedMethod === 'paytm') {
+                    document.getElementById('paytmFields').style.display = 'block';
+                } else if (selectedMethod === 'gpay') {
+                    document.getElementById('gpayFields').style.display = 'block';
+                } else if (selectedMethod === 'phonepe') {
+                    document.getElementById('phonepeFields').style.display = 'block';
+                } else if (selectedMethod === 'upi') {
+                    document.getElementById('upiFields').style.display = 'block';
+                }
+            });
+        });
+
+        // Handle OTP request buttons
+        const otpButtons = document.querySelectorAll('.request-otp');
+        
+        otpButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Update button text to indicate OTP sent
+                this.textContent = 'OTP Sent';
+                this.disabled = true;
+                
+                // Simulate OTP being sent
+                setTimeout(() => {
+                    this.textContent = 'Resend OTP';
+                    this.disabled = false;
+                }, 30000); // 30 seconds cooldown
+                
+                // Show alert notification
+                alert('OTP has been sent to your registered mobile number');
+            });
+        });
+
+        // Format Card Number with spaces
+        const cardNumber = document.getElementById('cardNumber');
+        if (cardNumber) {
+            cardNumber.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                // Add space after every 4 digits
+                value = value.replace(/(.{4})/g, '$1 ').trim();
+                e.target.value = value;
+            });
+        }
+
+        // Format Expiry Date (MM/YY)
+        const expiryDate = document.getElementById('expiryDate');
+        if (expiryDate) {
+            expiryDate.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 0) {
+                    if (value.length <= 2) {
+                        e.target.value = value;
+                    } else {
+                        e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                    }
+                }
+            });
+        }
+
+        // Payment Form Submission
+        const paymentForm = document.getElementById('paymentDetailsForm');
+        const paymentFormContainer = document.getElementById('paymentForm');
+        const paymentSuccess = document.getElementById('paymentSuccess');
+
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Validate form
+                const paymentId = document.getElementById('paymentId').value;
+                const amount = document.getElementById('amount').value;
+                const terms = document.getElementById('terms').checked;
+                const paymentMethodSelected = document.querySelector('.payment-method.active');
+                
+                if (!paymentId || !amount || !terms || !paymentMethodSelected) {
+                    alert('Please fill all required fields and select a payment method');
+                    return;
+                }
+                
+                // Check if the payment method-specific fields are filled
+                const selectedMethod = paymentMethodSelected.getAttribute('data-method');
+                let methodValid = false;
+                
+                if (selectedMethod === 'card') {
+                    const cardNumber = document.getElementById('cardNumber').value;
+                    const expiryDate = document.getElementById('expiryDate').value;
+                    const cvv = document.getElementById('cvv').value;
+                    const cardOtp = document.getElementById('cardOtp').value;
+                    methodValid = cardNumber && expiryDate && cvv && cardOtp;
+                } else if (selectedMethod === 'paytm') {
+                    const paytmUpi = document.getElementById('paytmUpi').value;
+                    const paytmOtp = document.getElementById('paytmOtp').value;
+                    methodValid = paytmUpi && paytmOtp;
+                } else if (selectedMethod === 'gpay') {
+                    const gpayId = document.getElementById('gpayId').value;
+                    const gpayOtp = document.getElementById('gpayOtp').value;
+                    methodValid = gpayId && gpayOtp;
+                } else if (selectedMethod === 'phonepe') {
+                    const phonepeNumber = document.getElementById('phonepeNumber').value;
+                    const phonepeOtp = document.getElementById('phonepeOtp').value;
+                    methodValid = phonepeNumber && phonepeOtp;
+                } else if (selectedMethod === 'upi') {
+                    const upiId = document.getElementById('upiId').value;
+                    const upiOtp = document.getElementById('upiOtp').value;
+                    methodValid = upiId && upiOtp;
+                }
+                
+                if (!methodValid) {
+                    alert('Please complete all payment details for your selected payment method');
+                    return;
+                }
+                
+                // Simulate payment processing
+                setTimeout(() => {
+                    paymentFormContainer.style.display = 'none';
+                    paymentSuccess.style.display = 'block';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html> 
